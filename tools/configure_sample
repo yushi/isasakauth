@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+require 'pathname'
+
+basedir = Pathname.new(File.dirname(__FILE__) + '/..')
+conf = Pathname.new(basedir + 'sample/conf/nginx.conf')
+
+p basedir
+p conf
+
+f = conf.open("r")
+buf = f.read
+f.close
+
+buf.gsub!('/PATH/TO', basedir.realpath)
+
+f = conf.open("w")
+f.write(buf)
+f.close
