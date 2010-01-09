@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'tokyotyrant'
+include TokyoTyrant
+
+def usage
+  cmd = File.basename(__FILE__)
+  puts "#{cmd} <username>"
+end
+
+def adduser(username, password)
+  p username
+  p password
+  # create the object
+  rdb = RDB::new
+
+  # connect to the server
+  if !rdb.open("127.0.0.1", 1978)
+    ecode = rdb.ecode
+    STDERR.printf("open error: %s\n", rdb.errmsg(ecode))
+    return nil
+  end
+  # store records
+  if !rdb.put(username, password)
+    ecode = rdb.ecode
+    STDERR.printf("put error: %s\n", rdb.errmsg(ecode))
+    return nil
+  end
+  puts "user added"
+end
+
+def get_password
+  system "stty -echo"
+  print "password:"
+  password = $stdin.gets.chop
+  system "stty echo"
+  return nil if(password == "")
+  return password
+end
+
+if ARGV.size != 1
+  usage
+  STDERR.printf("invalid argument\n")
+end
+
+adduser(ARGV[0], get_password)
