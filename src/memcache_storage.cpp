@@ -1,6 +1,9 @@
 #include "memcache_storage.h"
 #include <iostream>
-MemcacheStorage::MemcacheStorage() {
+MemcacheStorage::MemcacheStorage() : Storage() {
+}
+
+MemcacheStorage::MemcacheStorage(string key_prefix) : Storage(key_prefix) {
 }
 
 MemcacheStorage::~MemcacheStorage() {
@@ -18,6 +21,8 @@ string MemcacheStorage::get(string key) {
   if(memc == NULL){
     return ret;
   }
+
+  key = key_prefix + key;
   size_t val_size = 0;
   char *val = (char*)memcached_get(memc,
                                    key.c_str(),
@@ -47,6 +52,7 @@ bool MemcacheStorage::set(string key, string val) {
     return ret;
   }
 
+  key = key_prefix + key;
   rc = memcached_set (memc,
                       key.c_str(),
                       key.size(),
@@ -74,6 +80,7 @@ bool MemcacheStorage::del(string key) {
     return ret;
   }
 
+  key = key_prefix + key;
   rc = memcached_delete (memc,
                          key.c_str(),
                          key.size(),

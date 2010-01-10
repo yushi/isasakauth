@@ -23,7 +23,10 @@ private:
   TTStorage storage;
 
 public:
-  Authenticator(string hostname, int port) {
+  Authenticator(string hostname,
+                int port,
+                string key_prefix = string("auth::")) {
+    this->storage = TTStorage(key_prefix);
     this->storage.set_host_port(hostname, port);
   }
 

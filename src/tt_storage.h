@@ -9,6 +9,7 @@ using namespace std;
 class TTStorage : public Storage {
  public:
   TTStorage();
+  TTStorage(string key_prefix);
   ~TTStorage();
   string get(string key);
   bool set(string key, string val);

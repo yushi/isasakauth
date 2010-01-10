@@ -6,8 +6,14 @@ class Storage {
 protected:
   string hostname;
   int port;
+  string key_prefix;
 public:
   Storage() {
+    this->key_prefix = string("");
+  }
+
+  Storage(string key_prefix) {
+    this->key_prefix = key_prefix;
   }
 
   ~Storage() {

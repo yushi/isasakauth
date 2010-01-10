@@ -9,6 +9,7 @@ using namespace std;
 class MemcacheStorage : public Storage {
  public:
   MemcacheStorage();
+  MemcacheStorage(string key_prefix);
   ~MemcacheStorage();
   string get(string key);
   bool set(string key, string val);

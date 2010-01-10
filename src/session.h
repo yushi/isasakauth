@@ -19,7 +19,11 @@ private:
   MemcacheStorage storage;
 
 public:
-  Session(string host, int port, SessionID session_id) {
+  Session(string host,
+          int port,
+          SessionID session_id,
+          string key_prefix = string("session::")) {
+    this->storage = MemcacheStorage(key_prefix);
     this->storage.set_host_port(host, port);
     this->session_id = session_id;
     this->username = this->storage.get((this->session_id).to_s());
@@ -29,7 +33,11 @@ public:
     }
   }
 
-  Session(string host, int port, string username) {
+  Session(string host,
+          int port,
+          string username,
+          string key_prefix = string("session::")) {
+    this->storage = MemcacheStorage(key_prefix);
     this->storage.set_host_port(host, port);
     this->username = username;
     this->session_id = SessionID();

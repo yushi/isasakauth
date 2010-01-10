@@ -1,6 +1,9 @@
 #include "tt_storage.h"
 
-TTStorage::TTStorage() {
+TTStorage::TTStorage() : Storage(){
+}
+
+TTStorage::TTStorage(string key_prefix) : Storage(key_prefix){
 }
 
 TTStorage::~TTStorage() {
@@ -11,6 +14,7 @@ string TTStorage::get(string key) {
   TCRDB *db = tcrdbnew();
 
   if (tcrdbopen(db, (this->hostname).c_str(), this->port)) {
+    key = key_prefix + key;
     int val_size = 0;
     char* val = (char*)tcrdbget(db,
                                 key.c_str(),
@@ -37,6 +41,7 @@ bool TTStorage::set(string key, string val) {
   TCRDB *db = tcrdbnew();
 
   if (tcrdbopen(db, (this->hostname).c_str(), this->port)) {
+    key = key_prefix + key;
     ret = (char*)tcrdbput(db,
                           key.c_str(),
                           key.size(),
@@ -58,6 +63,7 @@ bool TTStorage::del(string key) {
   TCRDB *db = tcrdbnew();
 
   if (tcrdbopen(db, (this->hostname).c_str(), this->port)) {
+    key = key_prefix + key;
     ret = (char*)tcrdbout(db,
                           key.c_str(),
                           key.size());
